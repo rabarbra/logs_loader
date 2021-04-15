@@ -14,7 +14,21 @@ $ pip install -r requirements.txt
 ```python
 from logger import Logger
 
+#Creating object for logs handling
 log_worker = Logger()
+
+#Log message:
+log_worker.logg("Message to log")
+
+#Getting data from URL (default: settings.LOGS_URL) with PARAMS.
+#Saving data in log_handler.logs
+data = log_handler.get_data(PARAMS, URL)
+
+#Sorting data by key (default: 'created_at'). This method changes log_handler.logs
+log_handler.sort_data('created_at')
+
+#Saving data to database:
+log_handler.save_to_db()
 ```
 
 ### Settings
