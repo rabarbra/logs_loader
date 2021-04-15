@@ -64,3 +64,8 @@ WRITE_TO_DB = False
 EXCEPTIONS_LOGGING = True
 #If True will logg exceptions occuried
 ```
+
+### Testing
+```python
+python -m unittest -v tests/test.py
+```
