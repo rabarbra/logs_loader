@@ -17,7 +17,7 @@ from logger import Logger
 #Creating object for logs handling
 log_worker = Logger()
 
-#Log message:
+#Log message. Log object stores in log_worker.last_log
 log_worker.logg("Message to log")
 
 #Getting data from URL (default: settings.LOGS_URL) with PARAMS.
@@ -29,6 +29,21 @@ log_handler.sort_data('created_at')
 
 #Saving data to database:
 log_handler.save_to_db()
+
+#Get last log message
+log_handler.last_log.message
+
+#Get last log hostname
+log_handler.last_log.hostname
+
+#Get last log creation date
+log_handler.last_log.created_at
+
+#Get last log user id
+log_handler.last_log.user_id
+
+#Get all logs stored in the database
+log_handler.lase_log.get_all_logs()
 ```
 
 ### Settings
