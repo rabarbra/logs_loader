@@ -2,14 +2,26 @@
 import requests
 from urllib.parse import urlparse
 from datetime import datetime
+from threading import Lock
 from . import settings
 from .models import Log, User, session
 from .sorting import sort
 
-class Logger():
-    def __init__(self):
-        pass
+class SingletonMeta(type):
+    
+    _instances = {}
+    _lock: Lock = Lock()
 
+    def __call__(cls, *args, **kwargs):
+        with cls._lock:
+            if cls not in cls._instances:
+                instance = super().__call__(*args, **kwargs)
+                cls._instances[cls] = instance
+        return cls._instances[cls]
+
+
+class Logger(metaclass=SingletonMeta):
+    
     #Adds new log and saves in self.last_log
     def logg(self, message, hostname=settings.HOSTNAME,
              created_at=datetime.utcnow(), user_id=settings.USER_ID):

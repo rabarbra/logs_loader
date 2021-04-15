@@ -33,11 +33,12 @@ mock_data = {
 
 mock_data_error = {'error': 'Error message from mock_data_error.'}
 
+logger = Logger()
+
 class TestLogger(TestCase):
 
     def test_logg(self):
         msg = 'Some message to log.'
-        obj = Logger()
         settings.WRITE_TO_DB = False
         obj.logg(msg)
         self.assertEqual(obj.last_log.message, msg)
