@@ -38,6 +38,8 @@ class Log(Base):
                f"{'user: ' + str(self.user_id) if self.user_id else ''}\n"
                f"  {self.message} ")
 
+    def get_all_logs(self):
+        return(session.query(Log).all())
 
 class User(Base):
     __tablename__ = 'users'

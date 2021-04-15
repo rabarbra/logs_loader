@@ -1,8 +1,8 @@
 #-*- coding: utf-8 -*-
 from datetime import date
 from pprint import pprint
-from get_logs.logger import Logger
-from get_logs import settings
+from logger.logger import Logger
+from logger import settings
 
 def main():
     d = date(2021, 1, 22)

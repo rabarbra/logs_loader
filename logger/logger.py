@@ -7,13 +7,18 @@ from .models import Log, User, session
 from .sorting import sort
 
 class Logger():
+    def __init__(self):
+        pass
+
     #Adds new log and saves in self.last_log
     def logg(self, message, hostname=settings.HOSTNAME,
              created_at=datetime.utcnow(), user_id=settings.USER_ID):
         self.last_log = Log(message, hostname, created_at, user_id)
         if settings.WRITE_TO_STDOUT:
             print(str(self.last_log))
-        session.add(self.last_log)
+        if settings.WRITE_TO_DB:
+            session.add(self.last_log)
+            session.commit()
 
     #Gets logs data from url with params, saves in self.logs
     def get_data(self, params, url=settings.LOGS_URL):
@@ -21,7 +26,7 @@ class Logger():
         try:
             data = requests.get(self.url).json()
             if data['error']:
-                raise Exception(data['error'])
+                raise Exception(f"got error from {self.url}: {data['error']}")
             self.logs = data['logs']
         except Exception as e:
             self.logg("Exception occuried while Logger.get_data(): " + str(e))
@@ -35,7 +40,7 @@ class Logger():
     def sort_data(self, key = 'created_at'):
         try:
             self.logs = sort(self.logs, key)
-        except AttributeError as e:
+        except Exception as e:
             if settings.EXCEPTIONS_LOGGING:
                 self.logg("Exception occured while Logger.sort_data(): " + str(e))
             raise
@@ -67,9 +72,5 @@ class Logger():
             if settings.EXCEPTIONS_LOGGING:
                 self.logg("Exception occured while Logger.save_to_db(): " + str(e))
             raise
-        finally:
-            if settings.WRITE_TO_DB:
-                session.commit()
-            else:
-                session.rollback()
-            session.close()
+        else:
+            session.commit()
