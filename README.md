@@ -43,7 +43,7 @@ log_handler.last_log.created_at
 log_handler.last_log.user_id
 
 #Get all logs stored in the database
-log_handler.lase_log.get_all_logs()
+all_logs = log_handler.lase_log.get_all_logs()
 ```
 
 ### Settings
