@@ -66,6 +66,6 @@ EXCEPTIONS_LOGGING = True
 ```
 
 ### Testing
-```python
-python -m unittest -v tests/test.py
+```bash
+$ python -m unittest -v tests/test.py
 ```
