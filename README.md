@@ -1,5 +1,5 @@
 # Python logger module
-This module is able to put log messages into stdout, save them in a database, receive logs from a third-party site, sort them and save them to the database.
+This module allows you to put log messages into stdout, save your owd log messages to the database, receive logs from a third-party site, sort them by key and save them to the database.
 
 ### Installation
 ```bash
@@ -11,6 +11,7 @@ $ pip install -r requirements.txt
 ```
 
 ### Usage
+First you need to create a Logger instance. Logger is a singleton class, so it will return you the same instance created at first call every time you want to create new Logger instance. Logger singleton is multithread-safe.
 ```python
 from logger import Logger
 
@@ -24,7 +25,8 @@ log_worker.logg("Message to log")
 # Saving data in log_handler.logs
 data = log_handler.get_data(PARAMS, URL)
 
-# Sorting data by key (default: 'created_at'). This method changes log_handler.logs
+# Sorting data by key (default: 'created_at').
+# This method changes log_handler.logs
 log_handler.sort_data('created_at')
 
 # Saving data to database:

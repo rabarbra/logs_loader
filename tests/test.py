@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import sys
 from unittest import TestCase
 from unittest.mock import Mock
 from logger import Logger, settings, logger
