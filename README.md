@@ -1,6 +1,7 @@
 # Python logger module
 This module allows you to put log messages into stdout, save your owd log messages to the database, receive logs from a third-party site, sort them by key and save them to the database.
 
+---
 ### Installation
 ```bash
 $ git clone https://github.com/rabarbra/logs_loader
@@ -10,6 +11,7 @@ $ source env/bin/activate
 $ pip install -r requirements.txt
 ```
 
+---
 ### Usage
 First you need to create a Logger instance. Logger is a singleton class, so it will return you the same instance created at first call every time you want to create new Logger instance. Logger singleton is multithread-safe.
 ```python
@@ -48,6 +50,7 @@ log_handler.last_log.user_id
 all_logs = log_handler.lase_log.get_all_logs()
 ```
 
+---
 ### Settings
 Settings are stored in logger/settings.py file.
 ```python
@@ -67,11 +70,13 @@ EXCEPTIONS_LOGGING = True
 # If True will logg exceptions occuried
 ```
 
+---
 ### Testing
 ```bash
 $ python -m unittest -v tests/test.py
 ```
 
+---
 ### Additional info
 
 1. Logger.get_data() uses requsts library for sending HTTP requests to server.
