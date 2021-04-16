@@ -1,10 +1,10 @@
 import os
 import sys
 from unittest import TestCase
-from unittest.mock import patch, Mock
+from unittest.mock import Mock
 
 sys.path.append(os.getcwd())
-from logger import Logger, settings
+from logger import Logger, settings, logger
 
 settings.DATBASE_PATH = os.getcwd() + '/test.db'
 settings.WRITE_TO_STDOUT = True
@@ -15,25 +15,32 @@ mock_data = {
         'error': '',
         'logs': [
             {
+                'created_at': '9999-12-31T23:59:59',
+                'user_id': '2147483647',
+                'first_name': 'Sat',
+                'second_name': 'Luci',
+                'message': 'And now we end everything.',
+            },
+            {
                 'created_at': '0001-01-01T00:00:00',
                 'user_id': '1',
                 'first_name': 'Jess',
                 'second_name': 'Christopher',
                 'message': 'Everything begins here.',
             },
-            {
-                'created_at': '9999-12-31T23:59:59',
-                'user_id': '2147483647',
-                'first_name': 'Sat',
-                'second_name': 'Luci',
-                'message': 'Now we end everything.',
-            },
         ]
 }
 
 mock_data_error = {'error': 'Error message from mock_data_error.'}
 
-logger = Logger()
+class MockResponse():
+    def __init__(self, data):
+        self.data = data
+    
+    def json(self):
+        return self.data
+
+obj = Logger()
 
 class TestLogger(TestCase):
 
@@ -48,14 +55,26 @@ class TestLogger(TestCase):
         self.assertTrue(obj.last_log in obj.last_log.get_all_logs())
 
     def test_get_data(self):
-        pass
+        logger.requests.get = Mock(return_value=MockResponse(mock_data))
+        self.assertIsInstance(obj.get_data("20210414"), list)
+        self.assertIsInstance(obj.logs[0], dict)
+        self.assertEqual(obj.last_log.message,
+                         f"Logger.get_data() executed succesfully. "
+                         f"Received {len(obj.logs)} records.")
+        #logger.requests.get = Mock(return_value=MockResponse(mock_data_error))
+        #self.assertRaisesRegex(Exception, 'got error from*', obj.get_data('20120414'))
 
     def test_sort_data(self):
-        pass
+        obj.sort_data()
+        self.assertEqual(obj.logs[0]['user_id'], '1')
+        obj.sort_data('message')
+        self.assertEqual(obj.logs[0]['user_id'], '2147483647')
+        obj.sort_data('user_id')
+        self.assertEqual(obj.logs[0]['user_id'], '1')
 
     def test_save_to_db(self):
         pass
 
-    #@classmethod
-    #def tearDownClass(cls):
-    #    os.remove(settings.DATABASE_PATH)
+    @classmethod
+    def tearDownClass(cls):
+        os.remove(settings.DATABASE_PATH)

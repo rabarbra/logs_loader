@@ -9,6 +9,9 @@ def compare(first, second, key): #True if second >= first
     if key == 'created_at':
         a = datetime.fromisoformat(first[key])
         b = datetime.fromisoformat(second[key])
+    elif key == 'user_id':
+        a = int(first[key])
+        b = int(second[key])
     else:
         a = first[key]
         b = second[key]
