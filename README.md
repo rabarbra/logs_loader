@@ -78,15 +78,15 @@ $ python -m unittest -v tests/test.py
 2. logger.sorting.sort() uses merge sort algorithm. Worst-case performance of merge sort is O(n log n). The disadvantage is that the algorithm requires O(n) space in worst case. I need to write the realisation with linked lists later to attaim O(1) space complexity.
 3. Here is my sqlite3 database schema:
 > table logs
->   "id" INTEGER NOT NULL
->   "created_at" DATETIME NOT NULL
->   "message" TEXT
->   "hostname" VARCHAR(150)
->   "user_id" INTEGER
+>> "id" INTEGER NOT NULL
+>> "created_at" DATETIME NOT NULL
+>> "message" TEXT
+>> "hostname" VARCHAR(150)
+>> "user_id" INTEGER
 > table users
->   "id" INTEGER NOT NULL
->   "first_name" VARCHAR(150)
->   "second_name" VARCHAR(150)
+>> "id" INTEGER NOT NULL
+>> "first_name" VARCHAR(150)
+>> "second_name" VARCHAR(150)
 4. Logger.save_to_db() saves all received logs in database
 5. I use python unittest module for testing. To emulate requests.get() method unittest.mock.Mock object is used.
 6. All exceptions are logged if settings.EXCEPTIONS_LOGGING is True.
