@@ -1,13 +1,12 @@
+# -*- coding: utf-8 -*-
 import os
 import sys
 from unittest import TestCase
 from unittest.mock import Mock
-
-sys.path.append(os.getcwd())
 from logger import Logger, settings, logger
 
-settings.DATBASE_PATH = os.getcwd() + '/test.db'
-settings.WRITE_TO_STDOUT = True
+settings.DATBASE_PATH = os.getcwd() + '/unittest.db'
+settings.WRITE_TO_STDOUT = False
 settings.WRITE_TO_DB = True
 settings.EXCEPTION_LOGGING = True
 
@@ -33,14 +32,17 @@ mock_data = {
 
 mock_data_error = {'error': 'Error message from mock_data_error.'}
 
+
 class MockResponse():
     def __init__(self, data):
         self.data = data
-    
+
     def json(self):
         return self.data
 
+
 obj = Logger()
+
 
 class TestLogger(TestCase):
 
@@ -53,16 +55,19 @@ class TestLogger(TestCase):
         settings.WRITE_TO_DB = True
         obj.logg(msg)
         self.assertTrue(obj.last_log in obj.last_log.get_all_logs())
+        self.assertIsInstance(obj.last_log, logger.Log)
 
     def test_get_data(self):
         logger.requests.get = Mock(return_value=MockResponse(mock_data))
         self.assertIsInstance(obj.get_data("20210414"), list)
         self.assertIsInstance(obj.logs[0], dict)
+        self.assertListEqual(obj.logs, mock_data['logs'])
+        self.assertDictEqual(obj.logs[1], mock_data['logs'][1])
         self.assertEqual(obj.last_log.message,
                          f"Logger.get_data() executed succesfully. "
                          f"Received {len(obj.logs)} records.")
-        #logger.requests.get = Mock(return_value=MockResponse(mock_data_error))
-        #self.assertRaisesRegex(Exception, 'got error from*', obj.get_data('20120414'))
+        # logger.requests.get = Mock(return_value=MockResponse(mock_data_error))
+        # self.assertRaisesRegex(Exception, 'got error from*', obj.get_data('20120414'))
 
     def test_sort_data(self):
         obj.sort_data()
@@ -73,7 +78,15 @@ class TestLogger(TestCase):
         self.assertEqual(obj.logs[0]['user_id'], '1')
 
     def test_save_to_db(self):
-        pass
+        obj.save_to_db()
+        jess = logger.session.query(logger.User).filter_by(id=1).first()
+        self.assertIsInstance(jess, logger.User)
+        self.assertEqual(jess.first_name, 'Jess')
+        log = logger.session.query(logger.Log).filter_by(user_id=jess.id)
+        log = log.first()
+        self.assertIsInstance(log, logger.Log)
+        self.assertTrue(log in obj.last_log.get_all_logs())
+        self.assertEqual(log.message, 'Everything begins here.')
 
     @classmethod
     def tearDownClass(cls):

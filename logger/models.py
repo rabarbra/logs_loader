@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from sqlalchemy import (
         Column,
         String, Integer, DateTime, Text, ForeignKey,
@@ -16,13 +16,13 @@ session = Session()
 
 class Log(Base):
     __tablename__ = 'logs'
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     created_at = Column(DateTime, nullable=False)
     message = Column(Text)
     hostname = Column(String(150))
     user_id = Column(Integer, ForeignKey('users.id'), nullable=True)
     user = relationship('User')
-    
+
     def __init__(self, message, hostname, created_at, user_id):
         self.message = message
         self.hostname = hostname
@@ -41,9 +41,10 @@ class Log(Base):
     def get_all_logs(self):
         return(session.query(Log).all())
 
+
 class User(Base):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     first_name = Column(String(150))
     second_name = Column(String(150))
 

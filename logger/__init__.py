@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 import os.path
 from .settings import DATABASE_PATH
 from .logger import Logger

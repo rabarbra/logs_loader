@@ -1,11 +1,13 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from datetime import datetime
+
 
 def sort(data, key):
     merge_sort(data, key)
     return data
 
-def compare(first, second, key): #True if second >= first
+
+def compare(first, second, key):  # True if second >= first
     if key == 'created_at':
         a = datetime.fromisoformat(first[key])
         b = datetime.fromisoformat(second[key])
@@ -19,6 +21,7 @@ def compare(first, second, key): #True if second >= first
         return True
     else:
         return False
+
 
 def merge_sort(data, key):
     if len(data) == 1 or len(data) == 0:
