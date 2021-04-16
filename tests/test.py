@@ -65,8 +65,9 @@ class TestLogger(TestCase):
         self.assertEqual(obj.last_log.message,
                          f"Logger.get_data() executed succesfully. "
                          f"Received {len(obj.logs)} records.")
-        # logger.requests.get = Mock(return_value=MockResponse(mock_data_error))
-        # self.assertRaisesRegex(Exception, 'got error from*', obj.get_data('20120414'))
+        logger.requests.get = Mock(return_value=MockResponse(mock_data_error))
+        with self.assertRaisesRegex(Exception, 'got error from*'):
+            obj.get_data('20120414')
 
     def test_sort_data(self):
         obj.sort_data()
