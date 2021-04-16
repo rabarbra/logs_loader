@@ -31,7 +31,7 @@ class Log(Base):
             self.user_id = user_id
 
     def __repr__(self):
-        return f"{self.__class__.__name__} {self.id}"
+        return f"{self.__class__.__name__} {str(self.id)}"
 
     def __str__(self):
         return(f"{self.hostname} {self.created_at} "
@@ -54,4 +54,4 @@ class User(Base):
         self.second_name = second_name
 
     def __repr__(self):
-        return f"{self.__class__.__name__} {self.id}"
+        return f"{self.__class__.__name__} {str(self.id)}"
