@@ -1,5 +1,5 @@
 # Python logger module
-This module allows you to put log messages into stdout, save your owd log messages to the database, receive logs from a third-party site, sort them by key and save them to the database.
+This module allows you to put log messages into stdout, save your own log messages to the database, receive logs from a third-party site, sort them by key and save them to the database.
 
 ---
 ### Installation
